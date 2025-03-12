@@ -29,7 +29,7 @@ def test_lazy_loaded_dataset():
         seed=42,
     )
 
-    # If we put in "structure" here as well, the collate_fn of the DataLoader throws an error because it cant process the list of structures as dicts. This can be easily fixed if we handle the structures correctly in the dataset class.
+    # If we put in "structure" here as well, the collate_fn of the DataLoader throws an error because it cant process the list of structures as dicts. This can be easily fixed if we handle the structures correctly in the dataset class. In our use case we use the graph data so the use cas of dataloading structure dicts is not needed.
     train_dataset = LazyDataset(train_data, ["a", "b"])
 
     memory_usage()
