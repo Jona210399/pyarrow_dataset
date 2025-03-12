@@ -9,9 +9,9 @@ def main():
     IDX_COLUMN = "idx"
     PATH = "data/structures"
 
-    table = create_dataset(NUM_ROWS, IDX_COLUMN, PATH)
+    table = create_dataset(NUM_ROWS, IDX_COLUMN, PATH)  # comment out if already created
 
-    data = pl.scan_parquet("data/structures").collect()
+    data = pl.scan_parquet(PATH).collect()
     first = data["structure"][0]
     print(data.head())
 

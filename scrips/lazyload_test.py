@@ -2,6 +2,7 @@ import polars as pl
 import psutil
 from torch.utils.data import DataLoader
 
+from pyarrow_dataset.create_dataset import create_dataset
 from pyarrow_dataset.lazy_dataset import LazyDataset
 from pyarrow_dataset.lazy_split import train_test_split
 
@@ -16,9 +17,9 @@ def memory_usage():
     print("Memory:", bytes_to_gb(process.memory_info().rss), "GB")
 
 
-def test_lazy_loaded_dataset():
+def test_lazy_loaded_dataset(path: str = "data/structures"):
     memory_usage()
-    data = pl.scan_parquet("data/structures")
+    data = pl.scan_parquet(path)
     memory_usage()
 
     train_data, test_data = train_test_split(
@@ -47,5 +48,14 @@ def test_lazy_loaded_dataset():
             break
 
 
+def main():
+    NUM_ROWS = 100
+    IDX_COLUMN = "idx"
+    PATH = "data/structures"
+
+    table = create_dataset(NUM_ROWS, IDX_COLUMN, PATH)  # comment out if already created
+    test_lazy_loaded_dataset(PATH)
+
+
 if __name__ == "__main__":
-    test_lazy_loaded_dataset()
+    main()
