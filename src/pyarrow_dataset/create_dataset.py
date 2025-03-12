@@ -26,8 +26,6 @@ def create_table(num_rows: int = 1000, idx_column: str = "idx"):
     ]
     structures = repeat_list_until_length(structures, num_rows)
 
-    print(len(structures))
-
     table = pa.Table.from_pydict(
         {
             "idx": list(range(num_rows)),
