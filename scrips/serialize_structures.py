@@ -8,7 +8,7 @@ def main():
     NUM_ROWS = 100
     PATH = "data/structures"
 
-    table = create_dataset(NUM_ROWS, PATH)  # comment out if already created
+    table = create_dataset(NUM_ROWS, PATH)
 
     data = pl.scan_parquet(PATH).collect()
     first = data["structure"][0]

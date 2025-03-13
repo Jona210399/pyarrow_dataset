@@ -41,7 +41,12 @@ def create_dataset(num_rows: int = 1000, path: str = "dataset"):
     table = create_table(num_rows)
 
     ds.write_dataset(
-        table, path, format="parquet", max_rows_per_file=1, max_rows_per_group=1
+        table,
+        path,
+        format="parquet",
+        max_rows_per_file=1,
+        max_rows_per_group=1,
+        existing_data_behavior="overwrite_or_ignore",
     )
 
     return table

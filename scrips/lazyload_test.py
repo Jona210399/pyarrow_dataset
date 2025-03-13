@@ -53,7 +53,7 @@ def main():
     NUM_ROWS = 100
     PATH = "data/structures"
 
-    table = create_dataset(NUM_ROWS, PATH)  # comment out if already created
+    table = create_dataset(NUM_ROWS, PATH)
     test_lazy_loaded_dataset(PATH)
 
 
