@@ -18,7 +18,7 @@ def repeat_list_until_length(list_: list[Any], length: int):
     return (list_ * ((length // len(list_)) + 1))[:length]
 
 
-def create_table(num_rows: int = 1000, idx_column: str = "idx"):
+def create_table(num_rows: int = 1000):
     structures = load_structures()
     structures = [
         pyarrow_serialize_structure_dict(structure.as_dict())
@@ -28,7 +28,6 @@ def create_table(num_rows: int = 1000, idx_column: str = "idx"):
 
     table = pa.Table.from_pydict(
         {
-            "idx": list(range(num_rows)),
             "structure": structures,
             "a": [list(range(5)) for _ in range(num_rows)],
             "b": np.random.rand(num_rows),
@@ -38,10 +37,8 @@ def create_table(num_rows: int = 1000, idx_column: str = "idx"):
     return table
 
 
-def create_dataset(
-    num_rows: int = 1000, idx_column: str = "idx", path: str = "dataset"
-):
-    table = create_table(num_rows, idx_column)
+def create_dataset(num_rows: int = 1000, path: str = "dataset"):
+    table = create_table(num_rows)
 
     ds.write_dataset(
         table, path, format="parquet", max_rows_per_file=1, max_rows_per_group=1

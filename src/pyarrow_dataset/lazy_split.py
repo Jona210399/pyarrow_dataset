@@ -18,16 +18,12 @@ def get_indices(length: int, frac_train: float, shuffle: bool, seed: int):
 
 def train_test_split(
     data: pl.LazyFrame,
-    idx_column: str,
     frac_train: float,
     shuffle: bool,
     seed: int,
 ):
-    if idx_column not in data.columns:
-        raise ValueError(
-            f"Column {idx_column} not found in the DataFrame. In order to split the data, the DataFrame must contain a column with unique indices."
-        )
-
+    """
+    Lazily split a LazyFrame into a training and a test set. The split is done based on the row indices of the DataFrame."""
     num_rows = data.select(pl.len()).collect().item()
     train_indices, test_indices = get_indices(
         num_rows,
@@ -35,6 +31,7 @@ def train_test_split(
         shuffle=shuffle,
         seed=seed,
     )
-    train_data = data.filter(pl.col(idx_column).is_in(train_indices))
-    test_data = data.filter(pl.col(idx_column).is_in(test_indices))
+    data = data.with_row_index()
+    train_data = data.filter(pl.col("index").is_in(train_indices)).drop("index")
+    test_data = data.filter(pl.col("index").is_in(test_indices)).drop("index")
     return train_data, test_data
