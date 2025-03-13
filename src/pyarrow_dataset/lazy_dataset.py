@@ -19,7 +19,7 @@ class LazyDataset(Dataset):
             offset = idx
             length = 1
 
-        item = self.data.slice(offset, length).collect()
+        item = self.data.slice(offset, length).collect(streaming=True)
 
         # Convert list columns to torch tensors to make them compatible with the default collate_fn of pytorch DataLoader
         return item.with_columns(
