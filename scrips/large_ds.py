@@ -14,7 +14,7 @@ def test_lazy_loaded_dataset(path: str):
     train_data, test_data = train_test_split(
         data,
         frac_train=0.8,
-        shuffle=True,
+        shuffle=False,
         seed=42,
     )
 
@@ -35,14 +35,14 @@ def test_lazy_loaded_dataset(path: str):
 
 
 def get_dataset_size():
-    df = pl.read_parquet("data/large_ds")
+    df = pl.read_parquet("data/large_ds/*.parquet")
     print(f"Estimated size of the dataset: {df.estimated_size()}")
     memory_usage()
 
 
 def main():
-    get_dataset_size()  # Comment out if you dont want to check the memory footprint of the not lazily loaded dataset
-    test_lazy_loaded_dataset(path="data/large_ds")
+    # get_dataset_size()  # Comment out if you dont want to check the memory footprint of the not lazily loaded dataset
+    test_lazy_loaded_dataset(path="data/large_ds/*.parquet")
 
 
 if __name__ == "__main__":

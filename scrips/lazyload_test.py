@@ -15,7 +15,7 @@ def test_lazy_loaded_dataset(path: str = "data/structures"):
     train_data, test_data = train_test_split(
         data,
         frac_train=0.8,
-        shuffle=True,
+        shuffle=False,
         seed=42,
     )
 
