@@ -11,3 +11,4 @@ wheels/
 
 dataset
 data/structures
+data/large_ds/*.parquet

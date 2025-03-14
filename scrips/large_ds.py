@@ -1,13 +1,12 @@
 import polars as pl
 from torch.utils.data import DataLoader
 
-from pyarrow_dataset.create_dataset import create_dataset
 from pyarrow_dataset.lazy_dataset import LazyDataset
 from pyarrow_dataset.lazy_split import train_test_split
 from pyarrow_dataset.utils import memory_usage
 
 
-def test_lazy_loaded_dataset(path: str = "data/structures"):
+def test_lazy_loaded_dataset(path: str):
     memory_usage()
     data = pl.scan_parquet(path)
     memory_usage()
@@ -20,12 +19,8 @@ def test_lazy_loaded_dataset(path: str = "data/structures"):
     )
 
     print("Train Data Type: ", type(train_data))
+    train_dataset = LazyDataset(train_data, ["problem", "solution"])
 
-    # If we put in "structure" here as well, the collate_fn of the DataLoader throws an error because it cant process the list of structures as dicts. This can be easily fixed if we handle the structures correctly in the dataset class. In our use case we use the graph data so the use cas of dataloading structure dicts is not needed.
-    train_dataset = LazyDataset(train_data, ["a", "b"])
-
-    memory_usage()
-    print(train_data.head().collect())
     memory_usage()
 
     loader = DataLoader(train_dataset, batch_size=5)
@@ -39,12 +34,15 @@ def test_lazy_loaded_dataset(path: str = "data/structures"):
             break
 
 
-def main():
-    NUM_ROWS = 100
-    PATH = "data/structures"
+def get_dataset_size():
+    df = pl.read_parquet("data/large_ds")
+    print(f"Estimated size of the dataset: {df.estimated_size()}")
+    memory_usage()
 
-    table = create_dataset(NUM_ROWS, PATH)
-    test_lazy_loaded_dataset(PATH)
+
+def main():
+    get_dataset_size()  # Comment out if you dont want to check the memory footprint of the not lazily loaded dataset
+    test_lazy_loaded_dataset(path="data/large_ds")
 
 
 if __name__ == "__main__":

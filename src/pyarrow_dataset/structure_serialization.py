@@ -1,11 +1,11 @@
 def pyarrow_serialize_structure_dict(sdict: dict):
     """Remove empty properties from a pymatgen Structure dictionary."""
-    if sdict["properties"] == {}:
+    if sdict.get("properties") == {}:
         sdict.pop("properties")
 
-    sites = sdict["sites"]
+    sites: list[dict] = sdict.get("sites", [])
     for site in sites:
-        if site["properties"] == {}:
+        if site.get("properties") == {}:
             site.pop("properties")
 
     return sdict

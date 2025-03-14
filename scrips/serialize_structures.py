@@ -13,6 +13,7 @@ def main():
     data = pl.scan_parquet(PATH).collect()
     first = data["structure"][0]
     print(data.head())
+    print(first)
 
     structure = Structure.from_dict(first)
     print(structure)
